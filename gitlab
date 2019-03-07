@@ -20,9 +20,9 @@ sudo docker run --detach \
 	--publish 443:443 --publish 80:80 --publish 28:22 \
 	--name gitlab \
 	--restart always \
-	--volume /srv/gitlab/config:/etc/gitlab \
-	--volume /srv/gitlab/logs:/var/log/gitlab \
-	--volume /srv/gitlab/data:/var/opt/gitlab \
+	--volume /srv/gitlab/config:/etc/gitlab:rw \
+	--volume /srv/gitlab/logs:/var/log/gitlab:rw \
+	--volume /srv/gitlab/data:/var/opt/gitlab:rw \
 	gitlab/gitlab-ce:latest
 	
 
