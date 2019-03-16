@@ -1,16 +1,11 @@
 #!/bin/bash
 
 function compruebaDirectorios (){
-
-	if [ -d /srv/gitlab/config ] ; then 
-	echo Ruta existente
-	else mkdir -p /srv/gitlab/config
-	fi
+	directories=(config data logs)
 	
-	if [ -d /srv/gitlab/data ] ; then
-	echo Ruta existente
-	else mkdir -p /srv/gitlab/data
-	fi
+	for directory in ${directories[@]}; do
+		mkdir -p /srv/gitlab/${directory}
+	done
 }
 
 compruebaDirectorios
@@ -24,6 +19,3 @@ sudo docker run --detach \
 	--volume /srv/gitlab/logs:/var/log/gitlab:rw \
 	--volume /srv/gitlab/data:/var/opt/gitlab:rw \
 	gitlab/gitlab-ce:latest
-	
-
-

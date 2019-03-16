@@ -1,0 +1,43 @@
+version: "3.6"
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    volumes:
+      - opt:/var/opt/gitlab
+      - logs:/var/log/gitlab
+      - config:/etc/gitlab
+    networks:
+      - frontend
+    ports:
+      - 22:22
+      - 80:80
+      - 443:443
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
+    configs:
+      - source: gitlab
+        target: /omnibus_config.rb
+    secrets:
+      - gitlab_root_password
+    
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner:/etc/gitlab-runner
+    deploy:
+      mode: replicated
+      replicas: 1
+configs:
+  gitlab:
+    file: ./gitlab.rb
+secrets:
+  gitlab_root_password:
+    external: true
+volumes:
+  opt:
+  logs:
+  config:
+  runner:
+networks:
+  frontend:
